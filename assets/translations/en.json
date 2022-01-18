@@ -1,0 +1,20 @@
+{
+    "who_has_won_label_text": "WHO HAS WON?",
+    "orLabelTextLabelText":"OR",
+    "drawLabelText":"DRAW",
+    "atLabelText":"в",
+    "theMatchLabelText":"The match \ntake place on",
+    "guessWhoWonLabelText":"Guess\n Who Won",
+    "stopTheChipLabelText":"Stop the chip",
+    "youAreLoseLabelText":"You are\n lose!",
+    "lookResultLabelText":"Look Result!",
+    "youAreRightLabelText":"You are\n right",
+    "hasWonLabelText":"HAS WON!",
+    "attacksLabelText":"Attacks",
+    "offTargetLabelText":"Off target",
+    "onTargetLabelText":"On Target",
+    "cornersLabelText":"Corners",
+    "yellowCardLabelText":"Yellow cards",
+    "redCardsLabelText":"Red Cards",
+    "nextLabelText":"NEXT" 
+}

@@ -1,0 +1,20 @@
+{
+    "who_has_won_label_text": "Кто победил?",
+    "orLabelTextLabelText":"ИЛИ",
+    "drawLabelText":"ничья",
+    "theMatchTakeLabelText":"Матч состоялся",
+    "atLabelText":"в",
+    "guessWhoWonLabelText":"Угадай кто победил",
+    "stopTheChipLabelText":"Останови фишку",
+    "youAreLoseLabelText":"Ты не угадал!",
+    "lookResultLabelText":"Смотреть результат",
+    "youAreRightLabelText":"Ты не угадал!",
+    "hasWonLabelText":"победил!",
+    "attacksLabelText":"Атаки",
+    "offTargetLabelText":"Вне цели",
+    "onTargetLabelText":"В цель",
+    "cornersLabelText":"Углы",
+    "yellowCardLabelText":"Желтые карточки",
+    "redCardsLabelText":"Красные карточки",
+    "nextLabelText":"Следующий"
+}
