@@ -6,6 +6,7 @@ class SplashScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       body: GestureDetector(
         onTap: () {
@@ -15,10 +16,18 @@ class SplashScreen extends StatelessWidget {
             ),
           );
         },
-        child: Image.asset(
-          'assets/images/splash.png',
-          fit: BoxFit.cover,
-        ),
+        child: Container(
+          width: size.width,
+          height: size.height,
+          decoration: const BoxDecoration(
+           image: DecorationImage(
+             image: AssetImage( 'assets/images/splash.png',),
+            fit: BoxFit.fill,
+            )
+           )
+          ),
+         
+        
       ),
     );
   }

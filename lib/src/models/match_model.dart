@@ -52,19 +52,19 @@ class Away {
       required  this.name,
       required  this.id,
         this.imageId,
-      required  this.cc,
+        this.cc,
     });
 
     String name;
     String id;
     String? imageId;
-    String cc;
+    String? cc;
 
     factory Away.fromJson(Map<String, dynamic> json) => Away(
         name: json["name"],
         id: json["id"],
         imageId: json["image_id"] == null ? null : json["image_id"],
-        cc: json["cc"],
+        cc: json["cc"] ?? null,
     );
 
     Map<String, dynamic> toJson() => {

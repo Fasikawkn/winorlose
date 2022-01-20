@@ -1,5 +1,4 @@
-import 'dart:math';
-
+import 'dart:core';
 import 'package:flutter/cupertino.dart';
 import 'package:winorlose/src/models/api/api_response.dart';
 import 'package:winorlose/src/models/match_event_model.dart';
@@ -8,6 +7,7 @@ import 'package:winorlose/src/models/services/respository/match_respository.dart
 
 class GameMatchModel extends ChangeNotifier {
   final MatchRepository repository;
+  int _value = 0;
   GameMatchModel({
     required this.repository,
   });
@@ -51,16 +51,28 @@ class GameMatchModel extends ChangeNotifier {
     }
   }
 
+  void switchValue(){
+    if(_value == 0){
+      _value = 25;
+    }else if(_value == 25){
+      _value = 0;
+    }
+    
+  }
+
   Future getCompletedMatch() async {
+       print("The random value is $_value");
+
+   switchValue();
+   print("The random value is $_value");
+  
+    
     response = Response.loading('fetching match');
     try {
       List<GameMatch> _gameMatchResponse = await repository.getCompletedMatch();
-      debugPrint("$_gameMatchResponse");
-      List<GameMatch> _winnedGames = [];
-      for (int i = 0; i < _gameMatchResponse.length; i++) {
-        if (_winnedGames.length > 10) {
-          break;
-        }
+
+      // List<GameMatch> _winnedGames = [];
+      for (int i = _value  ; i < _gameMatchResponse.length; i++) {
         GameMatch _gameMatch = _gameMatchResponse[i];
         String _score = _gameMatch.score;
         if (_score.isNotEmpty) {
@@ -68,15 +80,13 @@ class GameMatchModel extends ChangeNotifier {
           int _teamOneScore = int.parse(_scoreResult[0]);
           int _teamTwoScore = int.parse(_scoreResult[1]);
           if (_teamTwoScore > _teamOneScore || _teamTwoScore < _teamOneScore) {
-            _winnedGames.add(_gameMatch);
             response = Response.completed(_gameMatch);
+            break;
           }
         }
       }
-      debugPrint('Getting data is ${_winnedGames.length}');
-      response = Response.completed(_winnedGames);
-      winnedResponse = Response.completed(
-          _winnedGames[Random().nextInt(_winnedGames.length)]);
+    
+      
     } catch (e) {
       debugPrint("The error is ${e.toString()}");
       response = Response.error(e.toString());

@@ -37,3 +37,12 @@ class CustomFunctions {
   }
 }
 
+String getTeamTitleName(String name){
+  bool _containesEsport = name.contains('Esports');
+  if(_containesEsport){
+   String _newName =  name.replaceAll(' Esports', '');
+   return _newName.toUpperCase();
+  }else{
+    return name.toUpperCase();
+  }
+}

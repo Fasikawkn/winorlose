@@ -36,7 +36,7 @@ class WinOrLose extends StatelessWidget {
                       httpClient: http.Client(),
                     ),
                   ),
-                )),
+                ),),
       ],
       child: MaterialApp(
         localizationsDelegates: context.localizationDelegates,

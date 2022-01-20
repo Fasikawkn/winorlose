@@ -41,17 +41,15 @@ class _HomePageState extends State<HomePage> {
         debugPrint("response is ${model.response.status}");
         debugPrint("winner response is ${model.winnedResponse.status}");
         if (model.response.status == Status.initial ||
-            model.response.status == Status.loading ||
-            model.winnedResponse.status == Status.initial ||
-            model.winnedResponse.status == Status.loading) {
+            model.response.status == Status.loading 
+          ) {
           return const Center(
             child: CircularProgressIndicator(
               color: kYellowColor,
             ),
           );
-        } else if (model.response.status == Status.completed &&
-            model.winnedResponse.status == Status.completed) {
-          GameMatch _gameMatch = model.winnedResponse.data;
+        } else if (model.response.status == Status.completed ) {
+          GameMatch _gameMatch = model.response.data;
           String _date = CustomFunctions.getDate(_gameMatch.time);
           String _time = CustomFunctions.getTime(_gameMatch.time);
           List<double> score =
@@ -62,284 +60,325 @@ class _HomePageState extends State<HomePage> {
           };
           return SafeArea(
             child: SingleChildScrollView(
-              child: SizedBox(
-                // height: size.height,
-                child: Column(
+              child: Column(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 20.0,
-                        vertical: 30.0,
-                      ),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.center,
-                        children: [
-                           Text(
-                            LocaleKeys.who_has_won_label_text.tr(),
-                            style: const TextStyle(
-                              color: kYellowColor,
-                              fontSize: 30.0,
-                              fontWeight: FontWeight.w900,
-                            ),
-                          ),
-                          const SizedBox(
-                            height: 40.0,
-                          ),
-                          FutureBuilder<GameOdd>(
-                              future: model.getOdd(_gameMatch.gameId),
-                              builder: (context, snapshot) {
-                                return Row(
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceEvenly,
-                                  crossAxisAlignment: CrossAxisAlignment.start,
-                                  children: [
-                                    _buildOdd(
-                                      snapshot.hasData
-                                          ? Text(
-                                              snapshot.data!.homeOd,
-                                              style: const TextStyle(
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            )
-                                          : const SpinKitThreeBounce(
-                                              color: kYellowColor,
-                                              size: 12.0,
-                                            ),
-                                    ),
-                                    Column(
-                                      children: [
-                                        _buildOdd(
-                                          snapshot.hasData
-                                              ? Text(
-                                                  snapshot.data!.awayOd,
-                                                  style: const TextStyle(
-                                                    fontSize: 18.0,
-                                                    fontWeight: FontWeight.w600,
-                                                  ),
-                                                )
-                                              : const SpinKitThreeBounce(
-                                                  color: kYellowColor,
-                                                  size: 12.0,
-                                                ),
-                                        ),
-                                        const SizedBox(
-                                          height: 5.0,
-                                        ),
-                                         Text(
-                                          LocaleKeys.drawLabelText.tr(),
-                                          style: const TextStyle(
-                                            color: Colors.grey,
-                                          ),
-                                        )
-                                      ],
-                                    ),
-                                    _buildOdd(
-                                      snapshot.hasData
-                                          ? Text(
-                                              snapshot.data!.awayOd,
-                                              style: const TextStyle(
-                                                fontSize: 18.0,
-                                                fontWeight: FontWeight.w600,
-                                              ),
-                                            )
-                                          : const SpinKitThreeBounce(
-                                              color: kYellowColor,
-                                              size: 12.0,
-                                            ),
-                                    ),
-                                  ],
-                                );
-                              }),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              CachedNetworkImage(
-                                imageUrl:
-                                    'https://spoyer.ru/api/team_img/soccer/${_gameMatch.home.id}.png',
-                                imageBuilder: (context, imageProvider) =>
-                                    Container(
-                                  width: 100.0,
-                                  height: 100.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: imageProvider,
-                                    ),
-                                  ),
-                                ),
-                                placeholder: (context, url) =>
-                                    const SpinKitCircle(
-                                  color: kYellowColor,
-                                  size: 50.0,
-                                ),
-                                errorWidget: (context, url, err) => Image.asset(
-                                  'assets/images/team_image.png',
-                                  width: 100,
-                                ),
-                              ),
-                               Text(
-                                LocaleKeys.orLabelTextLabelText.tr(),
-                                style:const TextStyle(
-                                  color: kYellowColor,
-                                  fontSize: 30.0,
-                                  fontWeight: FontWeight.w900,
-                                ),
-                              ),
-                              CachedNetworkImage(
-                                imageUrl:
-                                    'https://spoyer.ru/api/team_img/soccer/${_gameMatch.away.id}.png',
-                                imageBuilder: (context, imageProvider) =>
-                                    Container(
-                                  width: 100.0,
-                                  height: 100.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    image: DecorationImage(
-                                      image: imageProvider,
-                                    ),
-                                  ),
-                                ),
-                                placeholder: (context, url) =>
-                                    const SpinKitCircle(
-                                  color: kYellowColor,
-                                  size: 50.0,
-                                ),
-                                errorWidget: (context, url, err) => Image.asset(
-                                  'assets/images/team_image.png',
-                                  width: 100.0,
-                                ),
-                              ),
-                            ],
-                          ),
-                          const SizedBox(
-                            height: 20.0,
-                          ),
-                          Row(
-                            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                            children: [
-                              SvgPicture.asset(
-                                'assets/images/Frame5.svg',
-                              ),
+                    // SizedBox(height: size.height * 0.08,),
+               Container(
+                 padding: const EdgeInsets.symmetric(
+                   horizontal: 20.0,
+                   vertical: 30.0,
+                 ),
+                 child: Column(
+                   crossAxisAlignment: CrossAxisAlignment.center,
+                   
+                   children: [
+                      Text(
+                       LocaleKeys.who_has_won_label_text.tr(),
+                       style: const TextStyle(
+                         color: kYellowColor,
+                         fontSize: 30.0,
+                         fontWeight: FontWeight.w900,
+                       ),
+                     ),
+                     const SizedBox(
+                       height: 40.0,
+                     ),
+                     FutureBuilder<GameOdd>(
+                         future: model.getOdd(_gameMatch.gameId),
+                         builder: (context, snapshot) {
+                           return Row(
+                             mainAxisAlignment:
+                                 MainAxisAlignment.spaceEvenly,
+                             crossAxisAlignment: CrossAxisAlignment.start,
+                             children: [
+                               _buildOdd(
+                                 snapshot.hasData
+                                     ? Text(
+                                         snapshot.data!.homeOd,
+                                         style: const TextStyle(
+                                           fontSize: 18.0,
+                                           fontWeight: FontWeight.w600,
+                                         ),
+                                       )
+                                     : const SpinKitThreeBounce(
+                                         color: kYellowColor,
+                                         size: 12.0,
+                                       ),
+                               ),
+                               Column(
+                                 children: [
+                                   _buildOdd(
+                                     snapshot.hasData
+                                         ? Text(
+                                             snapshot.data!.awayOd,
+                                             style: const TextStyle(
+                                               fontSize: 18.0,
+                                               fontWeight: FontWeight.w600,
+                                             ),
+                                           )
+                                         : const SpinKitThreeBounce(
+                                             color: kYellowColor,
+                                             size: 12.0,
+                                           ),
+                                   ),
+                                   const SizedBox(
+                                     height: 5.0,
+                                   ),
+                                    Text(
+                                     LocaleKeys.drawLabelText.tr(),
+                                     style: const TextStyle(
+                                       color: Colors.grey,
+                                     ),
+                                   )
+                                 ],
+                               ),
+                               _buildOdd(
+                                 snapshot.hasData
+                                     ? Text(
+                                         snapshot.data!.awayOd,
+                                         style: const TextStyle(
+                                           fontSize: 18.0,
+                                           fontWeight: FontWeight.w600,
+                                         ),
+                                       )
+                                     : const SpinKitThreeBounce(
+                                         color: kYellowColor,
+                                         size: 12.0,
+                                       ),
+                               ),
+                             ],
+                           );
+                         }),
+                     const SizedBox(
+                       height: 20.0,
+                     ),
+                     Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                       children: [
+                         Column(
+                           children: [
+                             CachedNetworkImage(
+                               imageUrl:
+                                   'https://spoyer.ru/api/team_img/soccer/${_gameMatch.home.id}.png',
+                               imageBuilder: (context, imageProvider) =>
+                                   Container(
+                                 width: 100.0,
+                                 height: 100.0,
+                                 decoration: BoxDecoration(
+                                   shape: BoxShape.circle,
+                                   image: DecorationImage(
+                                     image: imageProvider,
+                                   ),
+                                 ),
+                               ),
+                               placeholder: (context, url) =>
+                                   const SpinKitCircle(
+                                 color: kYellowColor,
+                                 size: 50.0,
+                               ),
+                               errorWidget: (context, url, err) => Image.asset(
+                                 'assets/images/team_image.png',
+                                 width: 100,
+                               ),
+                             ),
+                              const SizedBox(height: 10.0,),
+                             ConstrainedBox(
+                               constraints: const BoxConstraints(maxWidth: 100),
+                               child: Text(
+                                 getTeamTitleName(_gameMatch.home.name), 
+                                 style: const TextStyle(
+                                   color: kYellowColor, 
+                                 fontSize: 16.0, fontWeight: FontWeight.w500, 
+                                 ),
+                                 ),
+                                 )
+                           ],
+                         ),
+                          Text(
+                           LocaleKeys.orLabelTextLabelText.tr(),
+                           style:const TextStyle(
+                             color: kYellowColor,
+                             fontSize: 30.0,
+                             fontWeight: FontWeight.w900,
+                           ),
+                         ),
+                         Column(
+                           children: [
+                             CachedNetworkImage(
+                               imageUrl:
+                                   'https://spoyer.ru/api/team_img/soccer/${_gameMatch.away.id}.png',
+                               imageBuilder: (context, imageProvider) =>
+                                   Container(
+                                 width: 100.0,
+                                 height: 100.0,
+                                 decoration: BoxDecoration(
+                                   shape: BoxShape.circle,
+                                   image: DecorationImage(
+                                     image: imageProvider,
+                                   ),
+                                 ),
+                               ),
+                               placeholder: (context, url) =>
+                                   const SpinKitCircle(
+                                 color: kYellowColor,
+                                 size: 50.0,
+                               ),
+                               errorWidget: (context, url, err) => Image.asset(
+                                 'assets/images/team_image.png',
+                                 width: 100.0,
+                               ),
+                             ),
+                            const SizedBox(height: 10.0,),
+                             ConstrainedBox(
+                               constraints: const BoxConstraints(maxWidth: 100),
+                               child: Text(
+                                 getTeamTitleName(_gameMatch.away.name), 
+                                 style: const TextStyle(color: kYellowColor, fontSize: 16.0, fontWeight: FontWeight.w500, ),
+                                 ),)
+                           ],
+                         ),
+                       ],
+                     ),
+                     const SizedBox(
+                       height: 20.0,
+                     ),
+                     Row(
+                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                       children: [
+                         SvgPicture.asset(
+                           'assets/images/Frame5.svg',
+                         ),
+                         Text(
+                           '${LocaleKeys.theMatchLabelText.tr()} \n$_date \n${LocaleKeys.atLabelText.tr()} $_time',
+                         ),
+                         SvgPicture.asset(
+                           'assets/images/Frame6.svg',
+                         ),
+                       ],
+                     ),
+                   ],
+                 ),
+               ),
+               Stack(children: [
+                 SizedBox(
+                   // margin: const EdgeInsets.only(top: 100),
+                   height: size.height * 0.5,
+                   width: size.width,
+                   child: CustomPaint(
+                     painter: CurvePainter(),
+                   ),
+                 ),
+                 Align(
+                   alignment: const Alignment(0, 0.5),
+                   child: _play
+                       ? Column(
+                         mainAxisAlignment: MainAxisAlignment.center,
+                           children: [
+                             CardWidget(
+                               childCallBack: (child) async {
+                                 debugPrint("$score");
+                                await Future.delayed(const Duration(milliseconds: 500));
+                                 if (child) {
+                                   print("Front is called Back");
+                                   if (score[1] > score[0]) {
+                                     debugPrint('Right won');
+                                     showDialog(
+                                       
+                                         context: context,
+                                         barrierDismissible: false,
+                                         builder: (context) =>
+                                             CorrectAlert(
+                                               _gameMatch,
+                                               isCorrect: true,
+                                             ),);
+                                   } else {
+                                     debugPrint('Left Won');
+                                     showDialog(
+                                       barrierDismissible: false,
+                                         context: context,
+                                         builder: (context) =>
+                                             CorrectAlert(
+                                               _gameMatch,
+                                               isCorrect: false,
+                                             ));
+                                   }
+                                 } else {
+                                   debugPrint('Back is Called');
+                                   if (score[0] > score[1]) {
+                                     debugPrint('left won');
+                                     showDialog(
+                                       barrierDismissible: false,
+                                         context: context,
+                                         builder: (context) =>
+                                             CorrectAlert(
+                                               _gameMatch,
+                                               isCorrect: true,
+                                             ));
+                                   } else {
+                                     debugPrint('Right won');
+                                     showDialog(
+                                         context: context,
+                                         barrierDismissible: false,
+                                         builder: (context) =>
+                                             CorrectAlert(
+                                               _gameMatch,
+                                               isCorrect: false,
+                                             ),);
+                                   }
+                                 }
+                               },
+                             ),
                               Text(
-                                '${LocaleKeys.theMatchLabelText.tr()} \n$_date \n${LocaleKeys.atLabelText.tr()} $_time',
-                              ),
-                              SvgPicture.asset(
-                                'assets/images/Frame6.svg',
-                              ),
-                            ],
-                          ),
-                        ],
-                      ),
-                    ),
-                    Stack(children: [
-                      Container(
-                        // margin: const EdgeInsets.only(top: 100),
-                        height: size.height * 0.4,
-                        width: size.width,
-                        child: CustomPaint(
-                          painter: CurvePainter(),
-                        ),
-                      ),
-                      Align(
-                        alignment: const Alignment(0, 0.5),
-                        child: _play
-                            ? Column(
-                                children: [
-                                  CardWidget(
-                                    childCallBack: (child) {
-                                      if (child) {
-                                        if (score[1] > score[0]) {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  CorrectAlert(
-                                                    _gameMatch,
-                                                    isCorrect: true,
-                                                  ));
-                                        } else {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  CorrectAlert(
-                                                    _gameMatch,
-                                                    isCorrect: false,
-                                                  ));
-                                        }
-                                      } else {
-                                        if (score[0] > score[1]) {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  CorrectAlert(
-                                                    _gameMatch,
-                                                    isCorrect: true,
-                                                  ));
-                                        } else {
-                                          showDialog(
-                                              context: context,
-                                              builder: (context) =>
-                                                  CorrectAlert(
-                                                    _gameMatch,
-                                                    isCorrect: false,
-                                                  ));
-                                        }
-                                      }
-                                    },
-                                  ),
-                                   Text(
-                                    LocaleKeys.stopTheChipLabelText.tr(),
-                                    style: const TextStyle(
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w600,
-                                      fontSize: 18,
-                                    ),
-                                  )
-                                ],
-                              )
-                            : GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    _play = true;
-                                  });
-                                },
-                                child: Container(
-                                  height: 200.0,
-                                  width: 200.0,
-                                  decoration: BoxDecoration(
-                                    shape: BoxShape.circle,
-                                    gradient: const LinearGradient(
-                                      colors: [
-                                        Color(0xffF3903C),
-                                        Color(0xffEE7A3B),
-                                      ],
-                                    ),
-                                    border: Border.all(
-                                      color: kYellowColor,
-                                      width: 2.0,
-                                    ),
-                                  ),
-                                  child:  Center(
-                                    child: Text(
-                                      LocaleKeys.guessWhoWonLabelText.tr(),
-                                      textAlign: TextAlign.center,
-                                      style: const TextStyle(
-                                        color: Colors.white,
-                                        fontWeight: FontWeight.w900,
-                                        fontSize: 25.0,
-                                      ),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                      ),
-                    ])
+                               LocaleKeys.stopTheChipLabelText.tr(),
+                               style: const TextStyle(
+                                 color: Colors.white,
+                                 fontWeight: FontWeight.w600,
+                                 fontSize: 18,
+                               ),
+                             )
+                           ],
+                         )
+                       : GestureDetector(
+                           onTap: () {
+                             setState(() {
+                               _play = true;
+                             });
+                           },
+                           child: Container(
+                             height: 200.0,
+                             width: 200.0,
+                             decoration: BoxDecoration(
+                               shape: BoxShape.circle,
+                               gradient: const LinearGradient(
+                                 colors: [
+                                   Color(0xffF3903C),
+                                   Color(0xffEE7A3B),
+                                 ],
+                               ),
+                               border: Border.all(
+                                 color: kYellowColor,
+                                 width: 2.0,
+                               ),
+                             ),
+                             child:  Center(
+                               child: Text(
+                                 LocaleKeys.guessWhoWonLabelText.tr(),
+                                 textAlign: TextAlign.center,
+                                 style: const TextStyle(
+                                   color: Colors.white,
+                                   fontWeight: FontWeight.w900,
+                                   fontSize: 25.0,
+                                 ),
+                               ),
+                             ),
+                           ),
+                         ),
+                 ),
+               ],)
+                 
                   ],
                 ),
-              ),
             ),
           );
         } else {
@@ -385,22 +424,20 @@ class CurvePainter extends CustomPainter {
     var paint = Paint();
     paint.color = Colors.black;
     paint.style = PaintingStyle.fill;
-
     var path = Path();
-
     path.moveTo(
       0,
       size.height * 0.2,
     );
     path.quadraticBezierTo(
       size.width * 0.25,
-      size.height * 0.4,
+       120,
       size.width * 0.5,
-      size.height * 0.4,
+      120,
     );
     path.quadraticBezierTo(
       size.width * 0.75,
-      size.height * 0.4,
+      120,
       size.width * 1.0,
       size.height * 0.2,
     );

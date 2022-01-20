@@ -60,10 +60,14 @@ class _CardWidgetState extends State<CardWidget>
 
   @override
   Widget build(BuildContext context) {
+  if(controller.isCompleted){
+    print("controller is stopped");
+  }
     return GestureDetector(
       onTap: () {
-        _timer!.cancel();
         widget.childCallBack(showFront);
+        _timer!.cancel();
+        
       },
       child: Center(
         child: AnimatedBuilder(

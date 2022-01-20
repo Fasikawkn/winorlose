@@ -38,7 +38,7 @@ static const Map<String,dynamic> ru = {
   "who_has_won_label_text": "Кто победил?",
   "orLabelTextLabelText": "ИЛИ",
   "drawLabelText": "ничья",
-  "theMatchTakeLabelText": "Матч состоялся",
+  "theMatchLabelText": "Матч \nсостоялся",
   "atLabelText": "в",
   "guessWhoWonLabelText": "Угадай кто победил",
   "stopTheChipLabelText": "Останови фишку",

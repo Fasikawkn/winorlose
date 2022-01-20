@@ -1,3 +1,5 @@
+import 'dart:ui';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_spinkit/flutter_spinkit.dart';
@@ -55,12 +57,12 @@ class _DetailPageState extends State<DetailPage> {
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
                 Text(
-                  "${_score[0] > _score[1] ? widget.gameMatch.home.name.toUpperCase() :
-                   widget.gameMatch.away.name.toUpperCase()} ${LocaleKeys.hasWonLabelText.tr()}",
+                  "${_score[0] > _score[1] ? getTeamTitleName(widget.gameMatch.home.name) :
+                   getTeamTitleName(widget.gameMatch.away.name)} ${LocaleKeys.hasWonLabelText.tr()}",
                   style: const TextStyle(
                       color: kYellowColor,
                       fontSize: 28.0,
-                      fontWeight: FontWeight.w900),
+                      fontWeight: FontWeight.w900,),
                 ),
                 Container(
                   width: size.width,
@@ -89,45 +91,82 @@ class _DetailPageState extends State<DetailPage> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                       children: [
-                        CachedNetworkImage(
-                          imageUrl:
-                              'https://spoyer.ru/api/team_img/football/${widget.gameMatch.home.id}.png',
-                          imageBuilder: (context, imageProvider) => Container(
-                            width: 100.0,
-                            height: 100.0,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(image: imageProvider)),
-                          ),
-                          placeholder: (context, url) =>
-                              const SpinKitThreeBounce(
-                            color: kYellowColor,
-                            size: 20.0,
-                          ),
-                          errorWidget: (context, url, err) => Image.asset(
-                            'assets/images/team_image.png',
-                            width: 100.0,
-                          ),
+                        Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl:
+                                  'https://spoyer.ru/api/team_img/football/${widget.gameMatch.home.id}.png',
+                              imageBuilder: (context, imageProvider) => Container(
+                                width: 100.0,
+                                height: 100.0,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(image: imageProvider,),),
+                              ),
+                              placeholder: (context, url) =>
+                                  const SpinKitThreeBounce(
+                                color: kYellowColor,
+                                size: 20.0,
+                              ),
+                              errorWidget: (context, url, err) => Image.asset(
+                                'assets/images/team_image.png',
+                                width: 100.0,
+                              ),
+                            ),
+                              const SizedBox(height: 10.0,),
+                             ConstrainedBox(
+                               constraints: const BoxConstraints(maxWidth: 100),
+                               child: Text(
+                                 getTeamTitleName(widget.gameMatch.home.name), 
+                                 overflow: TextOverflow.clip,
+                                 style: const TextStyle(
+                                   color: kYellowColor, 
+                                 fontSize: 16.0, fontWeight: FontWeight.w500, 
+                                 ),
+                                 ),
+                                 )
+                          ],
                         ),
-                        CachedNetworkImage(
-                          imageUrl:
-                              'https://spoyer.ru/api/team_img/football/${widget.gameMatch.home.id}.png',
-                          imageBuilder: (context, imageProvider) => Container(
-                            width: 100.0,
-                            height: 100.0,
-                            decoration: BoxDecoration(
-                                shape: BoxShape.circle,
-                                image: DecorationImage(image: imageProvider)),
-                          ),
-                          placeholder: (context, url) =>
-                              const SpinKitThreeBounce(
-                            color: kYellowColor,
-                            size: 20.0,
-                          ),
-                          errorWidget: (context, url, err) => Image.asset(
-                            'assets/images/team_image.png',
-                            width: 100.0,
-                          ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.center,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            CachedNetworkImage(
+                              imageUrl:
+                                  'https://spoyer.ru/api/team_img/football/${widget.gameMatch.home.id}.png',
+                              imageBuilder: (context, imageProvider) => Container(
+                                width: 100.0,
+                                height: 100.0,
+                                decoration: BoxDecoration(
+                                    shape: BoxShape.circle,
+                                    image: DecorationImage(image: imageProvider)),
+                              ),
+                              placeholder: (context, url) =>
+                                  const SpinKitThreeBounce(
+                                color: kYellowColor,
+                                size: 20.0,
+                              ),
+                              errorWidget: (context, url, err) => Image.asset(
+                                'assets/images/team_image.png',
+                                width: 100.0,
+                              ),
+                            ),
+                              const SizedBox(height: 10.0,),
+                             ConstrainedBox(
+                               constraints: const BoxConstraints(maxWidth: 100),
+                               child: Text(
+                                 getTeamTitleName(widget.gameMatch.away.name,), 
+                                 overflow: TextOverflow.fade,
+                                 style: const TextStyle(
+                                   color: kYellowColor, 
+
+                                 fontSize: 16.0, fontWeight: FontWeight.w500, 
+                                 ),
+                                 ),
+                                 )  
+                          ],
                         ),
                       ],
                     ),
@@ -247,7 +286,7 @@ class _DetailPageState extends State<DetailPage> {
                         } else {
                           print("Error ${model.eventResponse.status}");
                           return Center(
-                            child: Text(model.eventResponse.message!),
+                            child: Text(model.eventResponse.message!.contains("No Internet")?model.eventResponse.message!: "No Status Found" ),
                           );
                         }
                       }),
